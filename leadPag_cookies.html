@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookieByte Agency | Soluções Web de Alta Performance</title>
+    <style>
+        /* ==========================================================================
+           Variáveis de CSS (Paleta Cookie & CTA Azul)
+           ========================================================================== */
+        :root {
+            --color-dough: #FDFBF7; /* Fundo creme claro (Massa) */
+            --color-dark-choc: #3E2723; /* Texto principal escuro (Chocolate Amargo) */
+            --color-milk-choc: #5D4037; /* Tons intermediários (Chocolate ao Leite) */
+            --color-caramel: #D88C3E; /* Destaques e Botões Principais (Caramelo) */
+            --color-caramel-hover: #C57B33; /* Hover do Caramelo */
+            --color-cta-blue: #1A365D; /* Azul profundo exigido para o CTA Final */
+            --color-white: #FFFFFF;
+            
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ==========================================================================
+           Reset e Estilos Globais
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-dough);
+            color: var(--color-dark-choc);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        /* ==========================================================================
+           Animações (Intersection Observer Classes)
+           ========================================================================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Atrasos para elementos em sequência */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ==========================================================================
+           Header & Navegação (Glassmorphism)
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition-smooth);
+            background: transparent;
+        }
+
+        header.scrolled {
+            background: rgba(253, 251, 247, 0.85); /* Fundo translúcido */
+            backdrop-filter: blur(12px); /* Glassmorphism */
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(62, 39, 35, 0.05);
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-dark-choc);
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--color-caramel);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-caramel);
+        }
+
+        .btn-primary {
+            background-color: var(--color-caramel);
+            color: var(--color-white) !important;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            box-shadow: 0 8px 15px rgba(216, 140, 62, 0.2);
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-caramel-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(216, 140, 62, 0.3);
+        }
+
+        /* Menu Mobile */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--color-dark-choc);
+            transition: 0.3s;
+        }
+
+        /* ==========================================================================
+           Hero Section
+           ========================================================================== */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(216, 140, 62, 0.1);
+            color: var(--color-caramel);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: var(--color-dark-choc);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-milk-choc);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-dark-choc);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 2px solid var(--color-dark-choc);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-dark-choc);
+            color: var(--color-white);
+        }
+
+        /* ==========================================================================
+           Seção de Serviços
+           ========================================================================== */
+        #servicos {
+            padding: 100px 0;
+            background-color: var(--color-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--color-dark-choc);
+            margin-bottom: 15px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background: var(--color-dough);
+            padding: 40px;
+            border-radius: 20px;
+            transition: var(--transition-smooth);
+            border: 1px solid rgba(62, 39, 35, 0.05);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(62, 39, 35, 0.08);
+            border-color: var(--color-caramel);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(216, 140, 62, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--color-caramel);
+            margin-bottom: 25px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--color-dark-choc);
+        }
+
+        .service-card p {
+            color: var(--color-milk-choc);
+        }
+
+        /* ==========================================================================
+           Seção de Diferenciais
+           ========================================================================== */
+        #diferenciais {
+            padding: 100px 0;
+        }
+
+        .diff-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .diff-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--color-milk-choc), var(--color-dark-choc));
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(62, 39, 35, 0.15);
+        }
+
+        .diff-image::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            border: 2px dashed var(--color-caramel);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        .diff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .diff-item {
+            display: flex;
+            gap: 20px;
+        }
+
+        .diff-item-icon {
+            min-width: 50px;
+            height: 50px;
+            background-color: var(--color-caramel);
+            color: var(--color-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .diff-item-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .diff-item-text p {
+            color: var(--color-milk-choc);
+        }
+
+        /* ==========================================================================
+           Seção CTA Final (Azul Alto Contraste)
+           ========================================================================== */
+        #cta {
+            padding: 100px 0;
+            background-color: var(--color-cta-blue); /* Fundo Azul Exigido */
+            color: var(--color-white);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--color-white);
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn-cta-secondary {
+            background-color: var(--color-white);
+            color: var(--color-cta-blue) !important;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+            display: inline-block;
+        }
+
+        .btn-cta-secondary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==========================================================================
+           Footer
+           ========================================================================== */
+        footer {
+            background-color: var(--color-dark-choc);
+            color: var(--color-dough);
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h5 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--color-caramel);
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-col a {
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-col a:hover {
+            opacity: 1;
+            color: var(--color-caramel);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(253, 251, 247, 0.1);
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           Responsividade
+           ========================================================================== */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background-color: var(--color-dough);
+                flex-direction: column;
+                justify-content: center;
+                transition: right 0.4s ease;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .diff-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .diff-image {
+                height: 250px;
+                order: -1;
+            }
+
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">Cookie<span>Byte.</span></a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#hero">Início</a></li>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#diferenciais">Diferenciais</a></li>
+                    <li><a href="#cta" class="btn-primary">Fazer Orçamento</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-tag fade-up">Alto Desempenho e Conversão</span>
+                <h1 class="hero-title fade-up delay-1">Construímos Experiências Digitais Que Vendem.</h1>
+                <p class="hero-subtitle fade-up delay-2">Landing Pages de alta performance e sistemas web sob medida feitos com código limpo, semântico e focado 100% no resultado do seu negócio.</p>
+                <div class="hero-buttons fade-up delay-3">
+                    <a href="#servicos" class="btn-primary">Nossos Serviços</a>
+                    <a href="#cta" class="btn-outline">Fale com um Especialista</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicos">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Nossa Especialidade</h2>
+                <p>Tecnologia premium moldada para o seu crescimento</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card fade-up">
+                    <div class="service-icon">🚀</div>
+                    <h3>Landing Pages de Alta Conversão</h3>
+                    <p>Páginas ultrarrápidas, otimizadas para SEO e desenhadas aplicando princípios avançados de UX/UI para maximizar sua taxa de leads e vendas.</p>
+                </div>
+                
+                <div class="service-card fade-up delay-1">
+                    <div class="service-icon">💻</div>
+                    <h3>Sistemas Web Sob Medida</h3>
+                    <p>Arquitetura de software robusta. Desenvolvemos aplicações corporativas escaláveis, seguras e com fluxos de uso intuitivos.</p>
+                </div>
+
+                <div class="service-card fade-up delay-2">
+                    <div class="service-icon">🎨</div>
+                    <h3>Design de Interface (UI/UX)</h3>
+                    <p>Interfaces que não apenas parecem bonitas (como um cookie artesanal), mas que guiam o usuário de forma clara até o objetivo final.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="diferenciais">
+        <div class="container">
+            <div class="diff-grid">
+                <div class="diff-content fade-up">
+                    <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Código Limpo. Entrega Premium.</h2>
+                    <p style="margin-bottom: 40px; color: var(--color-milk-choc);">Nosso foco é qualidade. Não usamos templates prontos. Cada linha de código é pensada para garantir velocidade, acessibilidade e conversão.</p>
+                    
+                    <div class="diff-list">
+                        <div class="diff-item fade-up delay-1">
+                            <div class="diff-item-icon">1</div>
+                            <div class="diff-item-text">
+                                <h4>Responsividade Perfeita</h4>
+                                <p>Sua plataforma funcionará de forma impecável em smartphones, tablets e desktops de qualquer tamanho.</p>
+                            </div>
+                        </div>
+                        <div class="diff-item fade-up delay-2">
+                            <div class="diff-item-icon">2</div>
+                            <div class="diff-item-text">
+                                <h4>Vanilla First</h4>
+                                <p>Priorizamos tecnologias nativas (HTML5, CSS3, JS Puro) para garantir carregamento instantâneo, sem dependências pesadas.</p>
+                            </div>
+                        </div>
+                        <div class="diff-item fade-up delay-3">
+                            <div class="diff-item-icon">3</div>
+                            <div class="diff-item-text">
+                                <h4>Foco no Usuário</h4>
+                                <p>Animações suaves e microinterações projetadas para manter o usuário engajado sem prejudicar a performance.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="diff-image fade-up delay-2">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta">
+        <div class="container">
+            <div class="cta-content fade-up">
+                <h2>Pronto para escalar seu negócio?</h2>
+                <p>Junte-se às empresas que já revolucionaram sua presença digital. Solicite uma análise gratuita do seu projeto hoje mesmo.</p>
+                <a href="mailto:contato@cookiebyte.com" class="btn-cta-secondary">Solicitar Orçamento Sem Compromisso</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo" style="color: var(--color-dough);">Cookie<span style="color: var(--color-caramel);">Byte.</span></a>
+                    <p style="margin-top: 15px; opacity: 0.8;">Agência especializada em soluções web artesanais e de alta performance.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Navegação</h5>
+                    <ul>
+                        <li><a href="#hero">Início</a></li>
+                        <li><a href="#servicos">Serviços</a></li>
+                        <li><a href="#diferenciais">Diferenciais</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contato</h5>
+                    <ul>
+                        <li>hello@cookiebyte.com.br</li>
+                        <li>(11) 99999-9999</li>
+                        <li>São Paulo, SP - Brasil</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CookieByte Agency. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Header Glassmorphism Dinâmico no Scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // 2. Lógica do Menu Mobile
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                // Animação simples do icone do menu
+                const spans = mobileBtn.querySelectorAll('span');
+                if (navLinks.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                }
+            });
+
+            // Fecha o menu mobile ao clicar em um link
+            const links = document.querySelectorAll('.nav-links a');
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    const spans = mobileBtn.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                });
+            });
+
+            // 3. Intersection Observer para Animações Fade-In e Slide-Up
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // Dispara quando 15% do elemento estiver visível
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Opcional: Parar de observar após animar uma vez
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            // Selecionar todos os elementos que possuem a classe .fade-up
+            const animatedElements = document.querySelectorAll('.fade-up');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
